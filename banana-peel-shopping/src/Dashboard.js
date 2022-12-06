@@ -117,36 +117,53 @@ const Types = ({ types, filterItems }) => {
 
 
 
+const Item = ({item, setCurrID, setShowItemDetail}) => {
+  const [hover, setHover] = useState(true);
 
+  const mouseOver = (event) => {
+      setHover(false)
+  }
 
+  const mouseOut = (event) => {
+      setHover(true)
+  }
 
+  return (
+    <article key={item.id} className="product-item" onMouseOver={()=>{mouseOver()}} onMouseLeave={()=>{mouseOut()}}>
+    <div>
+    <img src={item.img} alt={item.title} className="item-img" />
+    <div className="item-info">
+      <header>
+        <h4>{item.title}</h4>
+        <h4 className="price">${item.price}</h4>
+      </header>
+      {/* <p className="item-text">{desc}</p> */}
+    </div>
+        <div hidden={hover}>
+        <button className= 'item-button' onClick={()=>{setCurrID(item.id-1); setShowItemDetail(true);}}> BUY NOW </button>
+        </div>
+    </div>
+  </article>
+  );
+}
 
 const Products = ({ flopItems, setCurrID, setShowItemDetail }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  return (
-    <div className="products-section">
-      {flopItems.map((flopItem) => {
-        const { id, title, img, price } = flopItem;
-        return (
-          <article key={id} id={`${id}`} className="product-item" onMouseOver={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)}>
-            <div>
-            <img src={img} alt={title} className="item-img" />
-            <div className="item-info">
-              <header>
-                <h4>{title}</h4>
-                <h4 className="price">${price}</h4>
-              </header>
-              {/* <p className="item-text">{desc}</p> */}
-            </div>
-            {
-              isHovered && <button className= 'item-button' onClick={()=>{setCurrID(id-1); setShowItemDetail(true);}}> BUY NOW </button>
-            }
-            </div>
-          </article>
-        );
-      })}
+  
+  return ( 
+    <div>
+    {
+        flopItems.map((flopItem, index) => {
+          return(
+          <Item key={index} item={flopItem} setCurrID = {setCurrID} setShowItemDetail = {setShowItemDetail} />
+          )
+        })
+    }
     </div>
   );
 };
+
+
+
+
 
 export default Dashboard;
